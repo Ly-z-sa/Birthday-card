@@ -1,0 +1,304 @@
+/* Global Styles & Variables */
+:root {
+    --bg-color: #fce4ec;
+    --primary-color: #e91e63;
+    --secondary-color: #ff4081;
+    --accent-color-1: #9c27b0;
+    --accent-color-2: #ffc107;
+    --text-dark: #333;
+    --text-light: #fff;
+    --card-bg-light: #fff;
+    --card-bg-dark: #fdecfd;
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-medium: rgba(0, 0, 0, 0.15);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    overflow: hidden;
+    color: var(--text-dark);
+    perspective: 1000px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+}
+
+.confetti-hearts-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#app-container {
+    position: relative;
+    width: 90vw;
+    max-width: 500px;
+    height: 70vh;
+    max-height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 30px var(--shadow-medium);
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: transparent;
+    z-index: 10;
+}
+
+.card-stage {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--card-bg-light);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px var(--shadow-light);
+    backface-visibility: hidden;
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.6s ease-out;
+    opacity: 0;
+    pointer-events: none;
+    cursor: pointer;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.card-stage.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: rotateY(0deg) scale(1);
+}
+
+#envelope-stage {
+    opacity: 1;
+    pointer-events: auto;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    position: relative;
+    overflow: hidden;
+    transform: rotateY(0deg) scale(1);
+}
+
+.envelope {
+    width: 85%;
+    height: 55%;
+    background: linear-gradient(160deg, #fefefe, #f0f0f0);
+    border-radius: 8px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.8s ease-in-out;
+}
+
+.envelope-flap {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(45deg, #ffccd9, #ff99bb);
+    border-bottom: 1px solid #ff7799;
+    transform-origin: top;
+    transition: transform 0.8s ease-in-out;
+    z-index: 2;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    -webkit-clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.envelope.open .envelope-flap {
+    transform: rotateX(180deg);
+}
+
+.read-me-text {
+    font-family: 'Merriweather', serif;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--text-dark);
+    text-align: center;
+    max-width: 80%;
+    padding: 0;
+    background-color: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    line-height: 1.4;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    border: none;
+    text-shadow: none;
+}
+
+#card-outer-stage {
+    background-color: var(--card-bg-dark);
+    transform: rotateY(-90deg) scale(0.8);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#card-outer-stage.active {
+    transform: rotateY(0deg) scale(1);
+}
+
+.card-outer-content {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.2em;
+    color: var(--primary-color);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    text-align: center;
+    padding: 30px;
+    background-color: var(--card-bg-light);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px var(--shadow-light);
+    display: inline-block;
+    line-height: 1.2;
+}
+
+#card-inner-stage {
+    background-color: var(--card-bg-light);
+    transform: rotateY(-90deg) scale(0.8);
+}
+#card-inner-stage.active {
+    transform: rotateY(0deg) scale(1);
+}
+
+.card-inner-content {
+    font-family: 'Merriweather', serif;
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: var(--text-dark);
+    text-align: center;
+    max-width: 80%;
+    padding: 30px;
+    background-color: #fffaf0;
+    border-radius: 10px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+    border: 1px dashed var(--primary-color);
+    position: relative;
+    overflow-y: auto;
+    max-height: 80%;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.card-inner-content::-webkit-scrollbar {
+    display: none;
+}
+
+.card-inner-content h2 {
+    font-family: 'Pacifico', cursive;
+    color: var(--secondary-color);
+    margin-top: 0;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.confetti, .heart {
+    position: absolute;
+    opacity: 0;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+}
+
+.confetti {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transform: translateY(100vh) rotate(0deg);
+    animation: flyUpConfetti 4s linear infinite;
+}
+
+.heart {
+    width: 15px;
+    height: 15px;
+    background-color: var(--secondary-color);
+    transform: rotate(45deg) translateY(100vh);
+    animation: flyUpHeart 3s ease-out infinite;
+}
+.heart::before,
+.heart::after {
+    content: '';
+    width: 15px;
+    height: 15px;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    position: absolute;
+}
+.heart::before { top: -8px; left: 0; }
+.heart::after { left: 8px; top: 0; }
+
+@keyframes flyUpConfetti {
+    0% {
+        transform: translateY(100vh) translateX(var(--start-x, 0)) rotate(0deg) scale(0.8);
+        opacity: 0;
+    }
+    20% { opacity: 1; }
+    100% {
+        transform: translateY(-20vh) translateX(var(--end-x, 0)) rotate(720deg) scale(1.2);
+        opacity: 0;
+    }
+}
+
+@keyframes flyUpHeart {
+    0% {
+        transform: translateY(100vh) translateX(var(--start-x, 0)) rotate(45deg) scale(0.7);
+        opacity: 0;
+    }
+    30% { opacity: 1; }
+    100% {
+        transform: translateY(-30vh) translateX(var(--end-x, 0)) rotate(405deg) scale(1.3);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    #app-container {
+        width: 95vw;
+        height: 80vh;
+    }
+    .card-outer-content {
+        font-size: 1.8em;
+    }
+    .read-me-text {
+        font-size: 0.9em;
+        bottom: 15px;
+    }
+    .card-inner-content {
+        font-size: 1em;
+        padding: 20px;
+    }
+    .card-inner-content h2 {
+        font-size: 1.5em;
+    }
+    .envelope {
+        width: 90%;
+        height: 45%;
+    }
+    .envelope-flap {
+        height: 40%;
+    }
+}
